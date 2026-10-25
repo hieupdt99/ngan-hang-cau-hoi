@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity - TTTH EDUCATION</title>
+    <!-- Tích hợp công cụ dịch công thức Toán học MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Thiết kế phẳng (Flat Design) tối giản với tông màu xanh */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #0056b3; text-align: center; margin-bottom: 30px; }
+        .question-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 25px; border-left: 5px solid #0056b3; }
+        .question-content { font-size: 1.1em; font-weight: bold; margin-bottom: 15px; }
+        .option { display: block; margin: 10px 0; padding: 12px; background: #e9ecef; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .option:hover { background: #d0e1f9; }
+    </style>
+</head>
+<body>
+    <h1>Hệ thống Antigravity - Khối 10</h1>
+    <div id="quiz-container">Đang tải dữ liệu ngân hàng câu hỏi...</div>
+
+    <script>
+        // Đường dẫn trỏ tới file JSON bạn vừa tạo
+        const dataUrl = '10/Chuong1/Bai1_MenhDe/NB.json';
+
+        fetch(dataUrl)
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('quiz-container');
+                container.innerHTML = ''; 
+                
+                data.forEach((q, index) => {
+                    let html = `<div class="question-card">`;
+                    html += `<div class="question-content">Câu ${index + 1}: ${q.content}</div>`;
+                    
+                    // Đảo qua 4 đáp án A, B, C, D
+                    q.items.forEach(item => {
+                        // Tạm thời hiển thị thông báo Đúng/Sai khi học sinh click
+                        let feedback = item.isCorrect ? 'Chính xác! Bạn làm rất tốt.' : 'Sai rồi, hãy xem lại lý thuyết nhé!';
+                        html += `<div class="option" onclick="alert('${feedback}')">`;
+                        html += `<b>${item.key}.</b> ${item.text}`;
+                        html += `</div>`;
+                    });
+                    
+                    html += `</div>`;
+                    container.innerHTML += html;
+                });
+                
+                // Kích hoạt MathJax render LaTeX sau khi tải xong dữ liệu
+                MathJax.typeset();
+            })
+            .catch(error => {
+                document.getElementById('quiz-container').innerHTML = 'Lỗi kết nối dữ liệu. Vui lòng kiểm tra lại file JSON.';
+            });
+    </script>
+</body>
+</html>
